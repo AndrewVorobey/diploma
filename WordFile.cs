@@ -5,20 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Word = Microsoft.Office.Interop.Word;
+using System.Text.RegularExpressions;
+
 
 
 
 
 namespace Диплом
 {
-  
-    public class WordFile
+
+    class WordFile
     {
         static timeTable[] f1 = new timeTable[35];
         public Word.Selection sln;
         private Object miss = Type.Missing;
         public Word.Range rng;
         [STAThread]
+        //выводит первое число из файла.
+        static int FindInt(string s, int i)
+        {
+            int[] matches = Regex.Matches(s, "\\d+")
+                .Cast<Match>()
+                .Select(x => int.Parse(x.Value))
+                .ToArray();
+            foreach (int match in matches) ;
+            if (matches.Length > i)
+                return matches[i];
+            else return -1;
+        }
+        static string FindName(string s)
+        {
+           // const string patternGroup = @"(A|А|ТФ|ЭЛ)" + @"(\s?-?–?\s?(\d{1,2}\,?-?–?){1,5}\s?–?-?\s?\d{2})";//А-14-11
+            Regex regex = new Regex(@"\s([А-Я])([а-я]*)\s([А-Я])\.\s?([А-Я])\.?");//");
+            return  regex.Match(s).Value;
+            
+        }
+
         public static void ReadFromFile(Object filename)
         {
             String[] Names = new String[34] { "Александров А.А.", "Амосов А.А.", "Амосова О.А.", "Ахметшин А.А", "Бредихин Р.Н.", "Булычева О.Н.", " Вестфальский А.Е.", "Горелов В.А.", "Горицкий Ю.А.", "Григорьев В.П.", "Дубинский Ю.А.", "Дубовицкая Н.В.", "Жилейкин Я.М.", "Заславский А.А.", "Злотник А.А.", "Зубков П.В.", "Зубов В.С.", "Игнатьева Н.У.", "Ишмухаметов А.З.", "Казенкин К.О.", "Кирсанов М.Н.", "Князев А.В.", "Крупин Г.В.", "Кубышин С.Ю.", "Ляшенко Л.И.", "Мамонтов А.И.", "Макаров П.В.", "Мещанинов Д.Г.", "Набебин А.А.", "Перескоков А.В.", "Титов Д.А.", "Фролов А.Б.", "Черепова М.Ф.", "Шевченко И.В." };
@@ -32,7 +54,7 @@ namespace Диплом
             Word.Document doc = new Word.DocumentClass();
 
             Object confirmConversions = Type.Missing;
-            Object readOnly = Type.Missing;
+            Object readOnly = true;// Type.Missing;
             Object addToRecentFiles = Type.Missing;
             Object passwordDocument = Type.Missing;
             Object passwordTemplate = Type.Missing;
@@ -52,50 +74,51 @@ namespace Диплом
             ref format, ref encoding, ref visible, ref openConflictDocument, ref openAndRepair, ref documentDirection, ref noEncodingDialog);
             if (doc.Tables.Count == 0)
             {
-                Console.Write("There is no tables in the file");
+                //Err. TODOk
             }
             else
             {
 
                 //Очистка входных данных
-                int I = 1;
+                Data.teacher.Clear();
+
                 for (int i = 1; i <= doc.Tables.Count; i++)
                 {
-                    string txt = doc.Paragraphs[I].Range.Text.ToString();
-                    I += (doc.Tables[1].Columns.Count + 1) * (doc.Tables[1].Rows.Count) + 1;//единицы, что бы прогнать стандартные, вордовские признаки конца строки. 
-
+                    //loadStatus.progress.StatusBarPlass(i, doc.Tables.Count);
+                    
+                formatTimeTable buf=new formatTimeTable("",6);
                     Word.Table t = doc.Tables[i];
                     for (int k = 2; k <= t.Columns.Count; k++)
                     {
-                        for (int j = 1; j <= t.Rows.Count; j++)
+                        for (int j = 2; j <= t.Rows.Count; j++)
                         {
-                            Lesson A=new Lesson(false, false, "", "", "");//=new Lesson;
-                           // A.roomNomber = "as";
-                            A.fromString(t.Cell(j, k).Range.Text);
-
-                             //r1.Text;
-                        
+                            Lesson A=new Lesson(0);
+                            string str = t.Cell(j, k).Range.Text;
+                            A.fromString(str);
+                            if(j<6 && k<7)
+                            buf.lesson[k - 2, j - 2] = A;
                         }
+
                     }
+
+                    Data.teacher.Add(buf);
+ 
+                  
                 }
             }
-            char[] formatted = new char[f.Length];
-            formatted = f.ToCharArray();
-            for (int i = 0; i < f.Length; i++)
+            //считывания имен
+            int StrI = 0;
+            string txt;
+            for (int i = 1; i <= doc.Paragraphs.Count; i++)
             {
-                if ((formatted[i] == '\a') || (formatted[i] == '\r') || (formatted[i] == '*'))
-                {
-                    formatted[i] = ' ';
-                    formatted[i + 1] = ' ';
-
-                }
-
+                txt=doc.Paragraphs[i].Range.Text;
+               string name= FindName(txt);
+               if (name != "")
+               {
+                   Data.teacher[StrI++].name = name;
+                   i += 39;
+               }
             }
-
-            string fp = new string(formatted);
-            String[] s1 = fp.Split('|');
-
-
             Object saveChanges = Word.WdSaveOptions.wdSaveChanges;
             Object originalFormat = Type.Missing;
             Object routeDocument = Type.Missing;
@@ -145,7 +168,6 @@ namespace Диплом
 
             t.Cell(1, 3).Width = 160;
             r1 = t.Cell(1, 3).Range;
-            Form1.data.Add();
             r1.Text = "Вторник";
 
             t.Cell(1, 4).Width = 160;

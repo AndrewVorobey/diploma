@@ -30,14 +30,17 @@
         {
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.управлениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.настройкиSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.подключитьсяКToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.управлениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.настройкиSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.подключитьсяКToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.Names = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -53,29 +56,6 @@
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1019, 24);
             this.menuStrip1.TabIndex = 3;
-            // 
-            // управлениеToolStripMenuItem
-            // 
-            this.управлениеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.настройкиSQLToolStripMenuItem,
-            this.подключитьсяКToolStripMenuItem});
-            this.управлениеToolStripMenuItem.Name = "управлениеToolStripMenuItem";
-            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
-            this.управлениеToolStripMenuItem.Text = "Управление";
-            // 
-            // настройкиSQLToolStripMenuItem
-            // 
-            this.настройкиSQLToolStripMenuItem.Name = "настройкиSQLToolStripMenuItem";
-            this.настройкиSQLToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.настройкиSQLToolStripMenuItem.Text = "Настройки БД";
-            this.настройкиSQLToolStripMenuItem.Click += new System.EventHandler(this.настройкиSQLToolStripMenuItem_Click);
-            // 
-            // подключитьсяКToolStripMenuItem
-            // 
-            this.подключитьсяКToolStripMenuItem.Name = "подключитьсяКToolStripMenuItem";
-            this.подключитьсяКToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.подключитьсяКToolStripMenuItem.Text = "Подключиться к БД ";
-            this.подключитьсяКToolStripMenuItem.Click += new System.EventHandler(this.подключитьсяКToolStripMenuItem_Click);
             // 
             // файлToolStripMenuItem
             // 
@@ -100,16 +80,59 @@
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
+            // управлениеToolStripMenuItem
+            // 
+            this.управлениеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.настройкиSQLToolStripMenuItem,
+            this.подключитьсяКToolStripMenuItem});
+            this.управлениеToolStripMenuItem.Name = "управлениеToolStripMenuItem";
+            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
+            this.управлениеToolStripMenuItem.Text = "Управление";
+            // 
+            // настройкиSQLToolStripMenuItem
+            // 
+            this.настройкиSQLToolStripMenuItem.Name = "настройкиSQLToolStripMenuItem";
+            this.настройкиSQLToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.настройкиSQLToolStripMenuItem.Text = "Настройки БД";
+            this.настройкиSQLToolStripMenuItem.Click += new System.EventHandler(this.настройкиSQLToolStripMenuItem_Click);
+            // 
+            // подключитьсяКToolStripMenuItem
+            // 
+            this.подключитьсяКToolStripMenuItem.Name = "подключитьсяКToolStripMenuItem";
+            this.подключитьсяКToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.подключитьсяКToolStripMenuItem.Text = "Подключиться к БД ";
+            this.подключитьсяКToolStripMenuItem.Click += new System.EventHandler(this.подключитьсяКToolStripMenuItem_Click);
+            // 
+            // dataGrid
+            // 
+            this.dataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.dataGrid.Location = new System.Drawing.Point(12, 167);
+            this.dataGrid.Name = "dataGrid";
+            this.dataGrid.Size = new System.Drawing.Size(995, 333);
+            this.dataGrid.TabIndex = 4;
+            // 
+            // Names
+            // 
+            this.Names.FormattingEnabled = true;
+            this.Names.Location = new System.Drawing.Point(147, 26);
+            this.Names.Name = "Names";
+            this.Names.Size = new System.Drawing.Size(121, 21);
+            this.Names.TabIndex = 7;
+            this.Names.SelectedIndexChanged += new System.EventHandler(this.Names_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1019, 333);
+            this.ClientSize = new System.Drawing.Size(1019, 512);
+            this.Controls.Add(this.Names);
+            this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -126,6 +149,8 @@
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.DataGridView dataGrid;
+        private System.Windows.Forms.ComboBox Names;
     }
 }
 
