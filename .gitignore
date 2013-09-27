@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 bin/Debug/MySql.Data.dll
 bin/Debug/Диплом.exe
 bin/Debug/Диплом.exe.config
@@ -26,3 +27,22 @@ Properties/Settings.Designer.cs
 Properties/Settings.settings
 SQL_Settings.resx
 Диплом.csproj
+=======
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+>>>>>>> 71ab789ecae52bb8e011e44e63b4f801d243ea4b
