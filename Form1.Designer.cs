@@ -39,6 +39,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.Names = new System.Windows.Forms.ComboBox();
+            this.ToSql = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
@@ -69,14 +70,14 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.открытьToolStripMenuItem.Text = "Открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
@@ -120,11 +121,22 @@
             this.Names.TabIndex = 7;
             this.Names.SelectedIndexChanged += new System.EventHandler(this.Names_SelectedIndexChanged);
             // 
+            // ToSql
+            // 
+            this.ToSql.Location = new System.Drawing.Point(768, 140);
+            this.ToSql.Name = "ToSql";
+            this.ToSql.Size = new System.Drawing.Size(143, 24);
+            this.ToSql.TabIndex = 8;
+            this.ToSql.Text = "ToSql";
+            this.ToSql.UseVisualStyleBackColor = true;
+            this.ToSql.Click += new System.EventHandler(this.ToSql_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1019, 512);
+            this.Controls.Add(this.ToSql);
             this.Controls.Add(this.Names);
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.menuStrip1);
@@ -151,6 +163,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.DataGridView dataGrid;
         private System.Windows.Forms.ComboBox Names;
+        private System.Windows.Forms.Button ToSql;
     }
 }
 

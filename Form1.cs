@@ -135,8 +135,8 @@ namespace Диплом
                             if (!Data.teacher[N].lesson[k, j].bothWeek)
                                 dataGrid.Rows[j + 1].Cells[k + 1].Value += "1 ";
                             dataGrid.Columns[k + 1].Width = 200;
-                            if (Data.teacher[N].lesson[k, j].grup[0] != "")
-                                dataGrid.Rows[j + 1].Cells[k + 1].Value += "Гр:" + Data.teacher[N].lesson[k, j].grup[0];
+                            if (Data.teacher[N].lesson[k, j].group[0] != "")
+                                dataGrid.Rows[j + 1].Cells[k + 1].Value += "Гр:" + Data.teacher[N].lesson[k, j].group[0];
                             if (Data.teacher[N].lesson[k, j].subject[0] != "")
                                 dataGrid.Rows[j + 1].Cells[k + 1].Value += " Пр:" + Data.teacher[N].lesson[k, j].subject[0];
                             if (Data.teacher[N].lesson[k, j].roomNomber[0] != "")
@@ -147,8 +147,8 @@ namespace Диплом
                         {
                             dataGrid.Rows[j + 1].Cells[k + 1].Value += "\n2 ";
                             dataGrid.Columns[k + 1].Width = 200;
-                            if (Data.teacher[N].lesson[k, j].grup[1] != "")
-                                dataGrid.Rows[j + 1].Cells[k + 1].Value += "Гр:" + Data.teacher[N].lesson[k, j].grup[1];
+                            if (Data.teacher[N].lesson[k, j].group[1] != "")
+                                dataGrid.Rows[j + 1].Cells[k + 1].Value += "Гр:" + Data.teacher[N].lesson[k, j].group[1];
                             if (Data.teacher[N].lesson[k, j].subject[1] != "")
                                 dataGrid.Rows[j + 1].Cells[k + 1].Value += "Пр:" + Data.teacher[N].lesson[k, j].subject[1];
                             if (Data.teacher[N].lesson[k, j].roomNomber[1] != "")
@@ -161,6 +161,13 @@ namespace Диплом
                 {
                 }
             }
+        }
+
+        private void ToSql_Click(object sender, EventArgs e)
+        {
+            if(Names.Items.Count==0) return;
+            int N = Names.SelectedIndex;
+            Sql.SetSchedule(N);
         }
 
 

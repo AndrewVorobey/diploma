@@ -43,18 +43,14 @@ namespace Диплом
 
         public static void ReadFromFile(Object filename)
         {
-            String[] Names = new String[34] { "Александров А.А.", "Амосов А.А.", "Амосова О.А.", "Ахметшин А.А", "Бредихин Р.Н.", "Булычева О.Н.", " Вестфальский А.Е.", "Горелов В.А.", "Горицкий Ю.А.", "Григорьев В.П.", "Дубинский Ю.А.", "Дубовицкая Н.В.", "Жилейкин Я.М.", "Заславский А.А.", "Злотник А.А.", "Зубков П.В.", "Зубов В.С.", "Игнатьева Н.У.", "Ишмухаметов А.З.", "Казенкин К.О.", "Кирсанов М.Н.", "Князев А.В.", "Крупин Г.В.", "Кубышин С.Ю.", "Ляшенко Л.И.", "Мамонтов А.И.", "Макаров П.В.", "Мещанинов Д.Г.", "Набебин А.А.", "Перескоков А.В.", "Титов Д.А.", "Фролов А.Б.", "Черепова М.Ф.", "Шевченко И.В." };
+           // String[] Names = new String[34] { "Александров А.А.", "Амосов А.А.", "Амосова О.А.", "Ахметшин А.А", "Бредихин Р.Н.", "Булычева О.Н.", " Вестфальский А.Е.", "Горелов В.А.", "Горицкий Ю.А.", "Григорьев В.П.", "Дубинский Ю.А.", "Дубовицкая Н.В.", "Жилейкин Я.М.", "Заславский А.А.", "Злотник А.А.", "Зубков П.В.", "Зубов В.С.", "Игнатьева Н.У.", "Ишмухаметов А.З.", "Казенкин К.О.", "Кирсанов М.Н.", "Князев А.В.", "Крупин Г.В.", "Кубышин С.Ю.", "Ляшенко Л.И.", "Мамонтов А.И.", "Макаров П.В.", "Мещанинов Д.Г.", "Набебин А.А.", "Перескоков А.В.", "Титов Д.А.", "Фролов А.Б.", "Черепова М.Ф.", "Шевченко И.В." };
 
-            for (int i = 0; i < 35; i++)
-            {
-                f1[i] = new timeTable();
-            }
 
             Word.Application app = new Word.ApplicationClass();
             Word.Document doc = new Word.DocumentClass();
 
             Object confirmConversions = Type.Missing;
-            Object readOnly = true;// Type.Missing;
+            Object readOnly = Type.Missing;
             Object addToRecentFiles = Type.Missing;
             Object passwordDocument = Type.Missing;
             Object passwordTemplate = Type.Missing;
@@ -68,7 +64,7 @@ namespace Диплом
             Object openAndRepair = Type.Missing;
             Object documentDirection = Type.Missing;
             Object noEncodingDialog = Type.Missing;
-            string f = "";
+
             doc = app.Documents.Open(ref filename, ref confirmConversions, ref readOnly, ref addToRecentFiles,
             ref passwordDocument, ref passwordTemplate, ref revert, ref writePasswordDocument, ref writePasswordTemplate,
             ref format, ref encoding, ref visible, ref openConflictDocument, ref openAndRepair, ref documentDirection, ref noEncodingDialog);
@@ -78,9 +74,7 @@ namespace Диплом
             }
             else
             {
-
-                //Очистка входных данных
-                Data.teacher.Clear();
+                DataMass.saveAndClear((string)filename);
 
                 for (int i = 1; i <= doc.Tables.Count; i++)
                 {
@@ -97,6 +91,10 @@ namespace Диплом
                             A.fromString(str);
                             if(j<6 && k<7)
                             buf.lesson[k - 2, j - 2] = A;
+                            if (t.Rows.Count < 6)
+                                A=new Lesson(0);
+                            A.fromString("");
+                                buf.lesson[k - 2, j - 1] = A;
                         }
 
                     }
@@ -106,6 +104,8 @@ namespace Диплом
                   
                 }
             }
+            
+            
             //считывания имен
             int StrI = 0;
             string txt;
@@ -118,6 +118,7 @@ namespace Диплом
                    Data.teacher[StrI++].name = name;
                    i += 39;
                }
+               if (Data.teacher.Count == StrI) break;
             }
             Object saveChanges = Word.WdSaveOptions.wdSaveChanges;
             Object originalFormat = Type.Missing;

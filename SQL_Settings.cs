@@ -15,6 +15,7 @@ namespace Диплом
     {
         public SQL_Settings()
         {
+
             InitializeComponent();
             Save.Enabled = false;
         }
@@ -34,7 +35,7 @@ namespace Диплом
 
         private void Save_Click(object sender, EventArgs e)
         {
-            Sql.settings.setSettings(SqlIp.Text, SqlName.Text,SqlUserName.Text, SqlUserPass.Text);
+            Sql.settings.setSettings(SqlIp.Text, SqlName.Text, SqlUserName.Text, SqlUserPass.Text);
             this.Close();
         }
 
