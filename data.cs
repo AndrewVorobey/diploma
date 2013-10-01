@@ -35,6 +35,7 @@ namespace Диплом
 
         public void fromString(string str)
         {
+            str = str.Replace("  ", "");
             if (str.Length < 3)
             {
                 exist[0] = exist[1] = false;
@@ -45,7 +46,7 @@ namespace Диплом
                 string substr = chekShortVar(str);
                 int n = str.IndexOf(substr);
                 string S = str.Remove(n, substr.Length);
-                str = "1 " + S + setRoomNomber(substr, 0) + "\r2 " + S + setRoomNomber(substr.Substring(setRoomNomber(substr, 0).Length), 0);
+                str = "1 " + S + getRoomNomber(substr) + "\r2 " + S + getRoomNomber(substr.Substring(getRoomNomber(substr).Length));
 
             }
             if (str[0] != '1')
@@ -74,6 +75,8 @@ namespace Диплом
                 subjectFormated(0);
             if (exist[1])
                 subjectFormated(1);
+
+            unionIfEquivalent();//Если первая и вторая недели эквивалентны
         }
 
         private string chekShortVar(string str)// "... 1 М710 2 М711"
@@ -89,30 +92,43 @@ namespace Диплом
             if (str1.Length > 3) exist[N] = true;
             string str = "" + str1;
             string s1;
-            s1 = setGroup(str, N);
-            str = str.Remove(0, str.IndexOf(s1) + s1.Length);
-            if ((s1 = setRoomNomber(str, N)) != "") exist[N] = true;
-            str = str.Remove(str.IndexOf(s1), s1.Length);
+            group[N] = getLectionGroup(str);
+            str = str.Remove(0, str.IndexOf(group[N]) + group[N].Length);
+            if ((roomNomber[N]= getRoomNomber(str)) != "") exist[N] = true;
+            str = str.Remove(str.IndexOf(roomNomber[N]), roomNomber[N].Length);
             str = str.Replace("\r", "");
             str = str.Replace("\a", "");
             subject[N] = str;
+            if (getGroup(group[N]).Length>5) lection[N] = false;
+            else lection[N] = true;
         }
 
-        private string setGroup(string str, int N)
+        public static string getLectionGroup(string str)
         {
 
             string pattern = facultets + @"(\s?-?–?\s?(\d{1,2}a?м?а?\,?-?–?){1,5})" + @"(\s?–?-?\s?\d{1,2}){1,2}";//А-14-11
             pattern = @"(" + pattern + @"\,)?" + pattern;//Если не распознает группы, стереть эту строку.
             Regex regex = new Regex(pattern);
-            return group[N] = regex.Match(str).Value;
+            return regex.Match(str).Value;
         }
-        private string setRoomNomber(string str, int N)
+
+        public static string getGroup(string str)
+        {
+
+            string pattern = facultets + @"(\s?-?–?\s?(\d{1,2}a?м?а?-?–?)\d{2})";//А-14-11
+            Regex regex = new Regex(pattern);
+            return regex.Match(str).Value;
+        }
+
+        public static string getRoomNomber(string str)
         {
             string pattern = houses + @"\s?–?-?\d{3}(\s?/\s?\d{1,3})?a?а?";// М-711
             Regex regex = new Regex(pattern);
-            return roomNomber[N] = regex.Match(str).Value;
+            return regex.Match(str).Value;
 
         }
+        
+        
 
         int findInStr(string A, string S)
         {
@@ -154,6 +170,15 @@ namespace Диплом
             return day;
         }
 
+        public void unionIfEquivalent()
+        {
+           if(exist[0] && exist[1])
+            if (group[0].Replace(" ", "") == group[1].Replace(" ", ""))
+                if (subject[0].Replace(" ", "") == subject[1].Replace(" ", ""))
+                    if (roomNomber[0].Replace(" ", "") == roomNomber[1].Replace(" ", ""))
+                        bothWeek = true;
+        }
+
     }
 
 
@@ -173,20 +198,21 @@ namespace Диплом
     {
         public static List<formatTimeTable> teacher;// = new List<formatTimeTable>();
         public static string name;
+        public static int selectNomber;
     }
 
     class DataMass
     {
         private static bool needToSave;
         static DataMass() { needToSave = false; }
-        public static List<List<formatTimeTable>> massData;
-        public static List<string> massName;
-
+        public static List<List<formatTimeTable>> massData = new List<List<formatTimeTable>>();
+        public static List<string> massName = new List<string>();
+        private static int nomber = 1;
         public static void saveAndClear(string name)
         {
-            if (needToSave) { massData.Add(Data.teacher); massName.Add(Data.name); }
             Data.teacher = new List<formatTimeTable>(35);
             Data.name = name;
+            massData.Add(Data.teacher); massName.Add("" + nomber++ + " " + Data.name);
         }
 
         public static void setData(int N)
@@ -194,7 +220,6 @@ namespace Диплом
             if (N < massData.Count)
                 try
                 {
-                    if (needToSave) { massData.Add(Data.teacher); massName.Add(Data.name); }
                     Data.name = massName[N];
                     Data.teacher = massData[N];
                 }

@@ -28,18 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.управлениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.настройкиSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.подключитьсяКToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReadFromSql = new System.Windows.Forms.ToolStripMenuItem();
+            this.WritteOne = new System.Windows.Forms.ToolStripMenuItem();
+            this.WritteAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.настройкиSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.dataGrid = new Диплом.MyDataGridView();
             this.Names = new System.Windows.Forms.ComboBox();
-            this.ToSql = new System.Windows.Forms.Button();
+            this.ShowDataMass = new System.Windows.Forms.ComboBox();
+            this.DeletData = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
@@ -55,7 +61,7 @@
             this.управлениеToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1019, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1029, 24);
             this.menuStrip1.TabIndex = 3;
             // 
             // файлToolStripMenuItem
@@ -84,59 +90,109 @@
             // управлениеToolStripMenuItem
             // 
             this.управлениеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.настройкиSQLToolStripMenuItem,
-            this.подключитьсяКToolStripMenuItem});
+            this.подключитьсяКToolStripMenuItem,
+            this.ReadFromSql,
+            this.WritteOne,
+            this.WritteAll,
+            this.настройкиSQLToolStripMenuItem});
             this.управлениеToolStripMenuItem.Name = "управлениеToolStripMenuItem";
-            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
-            this.управлениеToolStripMenuItem.Text = "Управление";
-            // 
-            // настройкиSQLToolStripMenuItem
-            // 
-            this.настройкиSQLToolStripMenuItem.Name = "настройкиSQLToolStripMenuItem";
-            this.настройкиSQLToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.настройкиSQLToolStripMenuItem.Text = "Настройки БД";
-            this.настройкиSQLToolStripMenuItem.Click += new System.EventHandler(this.настройкиSQLToolStripMenuItem_Click);
+            this.управлениеToolStripMenuItem.Size = new System.Drawing.Size(34, 20);
+            this.управлениеToolStripMenuItem.Text = "БД";
             // 
             // подключитьсяКToolStripMenuItem
             // 
             this.подключитьсяКToolStripMenuItem.Name = "подключитьсяКToolStripMenuItem";
-            this.подключитьсяКToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.подключитьсяКToolStripMenuItem.Text = "Подключиться к БД ";
+            this.подключитьсяКToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.подключитьсяКToolStripMenuItem.Text = "Подключиться";
             this.подключитьсяКToolStripMenuItem.Click += new System.EventHandler(this.подключитьсяКToolStripMenuItem_Click);
+            // 
+            // ReadFromSql
+            // 
+            this.ReadFromSql.Name = "ReadFromSql";
+            this.ReadFromSql.Size = new System.Drawing.Size(166, 22);
+            this.ReadFromSql.Text = "Считать";
+            this.ReadFromSql.Click += new System.EventHandler(this.ReadFromSql_Click);
+            // 
+            // WritteOne
+            // 
+            this.WritteOne.Name = "WritteOne";
+            this.WritteOne.Size = new System.Drawing.Size(166, 22);
+            this.WritteOne.Text = "Записать одного";
+            this.WritteOne.Click += new System.EventHandler(this.записатьToolStripMenuItem_Click);
+            // 
+            // WritteAll
+            // 
+            this.WritteAll.Name = "WritteAll";
+            this.WritteAll.Size = new System.Drawing.Size(166, 22);
+            this.WritteAll.Text = "Записать всех";
+            this.WritteAll.Click += new System.EventHandler(this.WritteAll_Click);
+            // 
+            // настройкиSQLToolStripMenuItem
+            // 
+            this.настройкиSQLToolStripMenuItem.Name = "настройкиSQLToolStripMenuItem";
+            this.настройкиSQLToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.настройкиSQLToolStripMenuItem.Text = "Настройки БД";
+            this.настройкиSQLToolStripMenuItem.Click += new System.EventHandler(this.настройкиSQLToolStripMenuItem_Click);
             // 
             // dataGrid
             // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            this.dataGrid.Location = new System.Drawing.Point(12, 167);
+            this.dataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGrid.GridColor = System.Drawing.SystemColors.HotTrack;
+            this.dataGrid.Location = new System.Drawing.Point(12, 148);
+            this.dataGrid.MultiSelect = false;
             this.dataGrid.Name = "dataGrid";
-            this.dataGrid.Size = new System.Drawing.Size(995, 333);
+            this.dataGrid.ReadOnly = true;
+            this.dataGrid.Size = new System.Drawing.Size(994, 248);
             this.dataGrid.TabIndex = 4;
             // 
             // Names
             // 
             this.Names.FormattingEnabled = true;
-            this.Names.Location = new System.Drawing.Point(147, 26);
+            this.Names.Location = new System.Drawing.Point(139, 111);
             this.Names.Name = "Names";
             this.Names.Size = new System.Drawing.Size(121, 21);
             this.Names.TabIndex = 7;
             this.Names.SelectedIndexChanged += new System.EventHandler(this.Names_SelectedIndexChanged);
             // 
-            // ToSql
+            // ShowDataMass
             // 
-            this.ToSql.Location = new System.Drawing.Point(768, 140);
-            this.ToSql.Name = "ToSql";
-            this.ToSql.Size = new System.Drawing.Size(143, 24);
-            this.ToSql.TabIndex = 8;
-            this.ToSql.Text = "ToSql";
-            this.ToSql.UseVisualStyleBackColor = true;
-            this.ToSql.Click += new System.EventHandler(this.ToSql_Click);
+            this.ShowDataMass.FormattingEnabled = true;
+            this.ShowDataMass.Location = new System.Drawing.Point(12, 111);
+            this.ShowDataMass.Name = "ShowDataMass";
+            this.ShowDataMass.Size = new System.Drawing.Size(121, 21);
+            this.ShowDataMass.TabIndex = 10;
+            this.ShowDataMass.SelectedIndexChanged += new System.EventHandler(this.ShowDataMass_SelectedIndexChanged);
+            // 
+            // DeletData
+            // 
+            this.DeletData.Location = new System.Drawing.Point(12, 82);
+            this.DeletData.Name = "DeletData";
+            this.DeletData.Size = new System.Drawing.Size(75, 23);
+            this.DeletData.TabIndex = 11;
+            this.DeletData.Text = "Закрыть файл";
+            this.DeletData.UseVisualStyleBackColor = true;
+            this.DeletData.Click += new System.EventHandler(this.DeletData_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1019, 512);
-            this.Controls.Add(this.ToSql);
+            this.ClientSize = new System.Drawing.Size(1029, 408);
+            this.Controls.Add(this.DeletData);
+            this.Controls.Add(this.ShowDataMass);
             this.Controls.Add(this.Names);
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.menuStrip1);
@@ -161,9 +217,13 @@
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.DataGridView dataGrid;
+        private MyDataGridView dataGrid;
         private System.Windows.Forms.ComboBox Names;
-        private System.Windows.Forms.Button ToSql;
+        private System.Windows.Forms.ComboBox ShowDataMass;
+        private System.Windows.Forms.Button DeletData;
+        private System.Windows.Forms.ToolStripMenuItem ReadFromSql;
+        private System.Windows.Forms.ToolStripMenuItem WritteAll;
+        private System.Windows.Forms.ToolStripMenuItem WritteOne;
     }
 }
 

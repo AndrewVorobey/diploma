@@ -74,7 +74,7 @@ namespace Диплом
             }
             else
             {
-                DataMass.saveAndClear((string)filename);
+                DataMass.saveAndClear(".doc");
 
                 for (int i = 1; i <= doc.Tables.Count; i++)
                 {
@@ -130,6 +130,7 @@ namespace Диплом
 
         public static void CreateWordDoc(string name)
         {
+            //"\f\r"-перенос на следующую строку. 
             Word.Application app = new Word.ApplicationClass();
             Word.Document doc = new Word.DocumentClass();
 

@@ -43,29 +43,29 @@ namespace Диплом
                 return e.Message.ToString();
             }
         }
-        
+
         //
         public static List<List<string>> sendRequest(string str)
         {
             List<List<string>> SqlAnswerd = new List<List<string>>(5);
-            if(online)
-            try
-            {
-                myCommand = new MySqlCommand(str, myConnection);
-                MySqlDataReader MyDataReader = myCommand.ExecuteReader();
-                while (MyDataReader.Read())
+            if (online)
+                try
                 {
-                    SqlAnswerd.Add(new List<string>(5));
-                    for (int i = 0; i < MyDataReader.FieldCount; i++)
-                        SqlAnswerd[SqlAnswerd.Count - 1].Add(MyDataReader.GetString(i));//записываем результат
+                    myCommand = new MySqlCommand(str, myConnection);
+                    MySqlDataReader MyDataReader = myCommand.ExecuteReader();
+                    while (MyDataReader.Read())
+                    {
+                        SqlAnswerd.Add(new List<string>(5));
+                        for (int i = 0; i < MyDataReader.FieldCount; i++)
+                            SqlAnswerd[SqlAnswerd.Count - 1].Add(MyDataReader.GetString(i));//записываем результат
+                    }
+                    MyDataReader.Close();
                 }
-                MyDataReader.Close();
-            }
-            catch (Exception e)
-            {
-                // SqlAnswerd[SqlAnswerd.Count].Add(e.Message.ToString());//добавляется как последний элемент
+                catch (Exception e)
+                {
+                    // SqlAnswerd[SqlAnswerd.Count].Add(e.Message.ToString());//добавляется как последний элемент
 
-            }
+                }
             return SqlAnswerd;
         }
 
@@ -128,7 +128,7 @@ namespace Диплом
                 try
                 {
                     if (Equals(name, answer[i][1], answer[i][2], answer[i][3]))
-                                return Convert.ToInt32(answer[i][0]);
+                        return Convert.ToInt32(answer[i][0]);
                 }
                 catch { }
 
@@ -146,6 +146,37 @@ namespace Диплом
             }
             catch { }
             return false;
+        }
+
+
+        public static void read()
+        {
+            if (!online) return;
+
+            DataMass.saveAndClear("SQL");
+            string reqest = "select id_user,pair,iseven, mon, tue, wed, thu, fri from _timeTable order by id_user;";
+            List<List<string>> mass=sendRequest(reqest);
+            int id = -1;
+            int N=-1;
+            for (int i = 0; i < mass.Count; i++)
+            {
+                if (id.ToString() != mass[i][0])
+                {
+                    id = Convert.ToInt32(mass[i][0]);
+                    string reqest2 = "select surname, name, secname from _users where id=" + id ;
+                    List<List<string>> name = sendRequest(reqest2);
+                    if (name.Count>0)
+                    Data.teacher.Add(new formatTimeTable(name[0][0]+" " + name[0][1][0]+"."+name[0][2][0]+".", 6));
+                    N++;
+                    for(int j=0;j<6;j++)
+                        for(int k=0;k<6;k++)
+                            Data.teacher[N].lesson[j,k]=new Lesson(0);
+                }
+
+                string chet=(Convert.ToInt32(mass[i][2])+1).ToString();
+                for(int j=3;j<3+5;j++)
+                Data.teacher[N].lesson[j-3,Convert.ToInt32(mass[i][1])-1].fromString(chet+" "+mass[i][j]);
+            }
         }
     }
 }
