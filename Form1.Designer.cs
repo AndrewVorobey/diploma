@@ -34,7 +34,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToSave = new System.Windows.Forms.ToolStripMenuItem();
             this.управлениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.подключитьсяКToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ReadFromSql = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,10 +42,10 @@
             this.WritteAll = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.dataGrid = new Диплом.MyDataGridView();
             this.Names = new System.Windows.Forms.ComboBox();
             this.ShowDataMass = new System.Windows.Forms.ComboBox();
             this.DeletData = new System.Windows.Forms.Button();
+            this.dataGrid = new Диплом.MyDataGridView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
@@ -68,7 +68,7 @@
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.открытьToolStripMenuItem,
-            this.сохранитьToolStripMenuItem});
+            this.ToSave});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
@@ -76,16 +76,16 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.открытьToolStripMenuItem.Text = "Открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
-            // сохранитьToolStripMenuItem
+            // ToSave
             // 
-            this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.сохранитьToolStripMenuItem.Text = "Сохранить";
-            this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            this.ToSave.Name = "ToSave";
+            this.ToSave.Size = new System.Drawing.Size(152, 22);
+            this.ToSave.Text = "Сохранить";
+            this.ToSave.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
             // управлениеToolStripMenuItem
             // 
@@ -134,30 +134,6 @@
             this.настройкиSQLToolStripMenuItem.Text = "Настройки БД";
             this.настройкиSQLToolStripMenuItem.Click += new System.EventHandler(this.настройкиSQLToolStripMenuItem_Click);
             // 
-            // dataGrid
-            // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            this.dataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            this.dataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Desktop;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGrid.GridColor = System.Drawing.SystemColors.HotTrack;
-            this.dataGrid.Location = new System.Drawing.Point(12, 148);
-            this.dataGrid.MultiSelect = false;
-            this.dataGrid.Name = "dataGrid";
-            this.dataGrid.ReadOnly = true;
-            this.dataGrid.Size = new System.Drawing.Size(994, 248);
-            this.dataGrid.TabIndex = 4;
-            // 
             // Names
             // 
             this.Names.FormattingEnabled = true;
@@ -185,6 +161,30 @@
             this.DeletData.Text = "Закрыть файл";
             this.DeletData.UseVisualStyleBackColor = true;
             this.DeletData.Click += new System.EventHandler(this.DeletData_Click);
+            // 
+            // dataGrid
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.dataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.dataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGrid.GridColor = System.Drawing.SystemColors.HotTrack;
+            this.dataGrid.Location = new System.Drawing.Point(12, 148);
+            this.dataGrid.MultiSelect = false;
+            this.dataGrid.Name = "dataGrid";
+            this.dataGrid.ReadOnly = true;
+            this.dataGrid.Size = new System.Drawing.Size(994, 248);
+            this.dataGrid.TabIndex = 4;
             // 
             // Form1
             // 
@@ -215,7 +215,7 @@
         private System.Windows.Forms.ToolStripMenuItem подключитьсяКToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToSave;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private MyDataGridView dataGrid;
         private System.Windows.Forms.ComboBox Names;

@@ -13,7 +13,12 @@ namespace Диплом
         string ip;
         string userName;
         string userPass;
-        public void setSettings(string name, string IP, string UName, string Pass) { this.name = name; ip = IP; userName = UName; userPass = Pass; }
+        public void setSettings(string name, string IP, string UName, string Pass) 
+        { 
+            this.name = name;
+            ip = IP; userName = UName; 
+            userPass = Pass;
+        }
         public override string ToString()
         {
             return "Database=" + name + ";Data Source=" + ip + ";User Id=" + userName + ";Password=" + userPass;// +"port=3306;";
@@ -22,6 +27,10 @@ namespace Диплом
 
     class Sql
     {
+        static Sql()
+        {
+            settings.setSettings("local_schedule", "127.0.0.1", "Andrew", "1994Andrew");
+        }
         static bool online;
         static MySqlConnection myConnection;
         static MySqlCommand myCommand;
@@ -30,7 +39,6 @@ namespace Диплом
         {
             try
             {
-                settings.setSettings("local_schedule", "127.0.0.1", "Andrew", "1994Andrew");//убрать, что бы не сбивались заданные настроки. 
                 string Connect = settings.ToString();
                 myConnection = new MySqlConnection(Connect);
                 myConnection.Open();

@@ -35,15 +35,15 @@ namespace Диплом
         }
         static string FindName(string s)
         {
-           // const string patternGroup = @"(A|А|ТФ|ЭЛ)" + @"(\s?-?–?\s?(\d{1,2}\,?-?–?){1,5}\s?–?-?\s?\d{2})";//А-14-11
+            // const string patternGroup = @"(A|А|ТФ|ЭЛ)" + @"(\s?-?–?\s?(\d{1,2}\,?-?–?){1,5}\s?–?-?\s?\d{2})";//А-14-11
             Regex regex = new Regex(@"\s([А-Я])([а-я]*)\s([А-Я])\.\s?([А-Я])\.?");//");
-            return  regex.Match(s).Value;
-            
+            return regex.Match(s).Value;
+
         }
 
         public static void ReadFromFile(Object filename)
         {
-           // String[] Names = new String[34] { "Александров А.А.", "Амосов А.А.", "Амосова О.А.", "Ахметшин А.А", "Бредихин Р.Н.", "Булычева О.Н.", " Вестфальский А.Е.", "Горелов В.А.", "Горицкий Ю.А.", "Григорьев В.П.", "Дубинский Ю.А.", "Дубовицкая Н.В.", "Жилейкин Я.М.", "Заславский А.А.", "Злотник А.А.", "Зубков П.В.", "Зубов В.С.", "Игнатьева Н.У.", "Ишмухаметов А.З.", "Казенкин К.О.", "Кирсанов М.Н.", "Князев А.В.", "Крупин Г.В.", "Кубышин С.Ю.", "Ляшенко Л.И.", "Мамонтов А.И.", "Макаров П.В.", "Мещанинов Д.Г.", "Набебин А.А.", "Перескоков А.В.", "Титов Д.А.", "Фролов А.Б.", "Черепова М.Ф.", "Шевченко И.В." };
+            // String[] Names = new String[34] { "Александров А.А.", "Амосов А.А.", "Амосова О.А.", "Ахметшин А.А", "Бредихин Р.Н.", "Булычева О.Н.", " Вестфальский А.Е.", "Горелов В.А.", "Горицкий Ю.А.", "Григорьев В.П.", "Дубинский Ю.А.", "Дубовицкая Н.В.", "Жилейкин Я.М.", "Заславский А.А.", "Злотник А.А.", "Зубков П.В.", "Зубов В.С.", "Игнатьева Н.У.", "Ишмухаметов А.З.", "Казенкин К.О.", "Кирсанов М.Н.", "Князев А.В.", "Крупин Г.В.", "Кубышин С.Ю.", "Ляшенко Л.И.", "Мамонтов А.И.", "Макаров П.В.", "Мещанинов Д.Г.", "Набебин А.А.", "Перескоков А.В.", "Титов Д.А.", "Фролов А.Б.", "Черепова М.Ф.", "Шевченко И.В." };
 
 
             Word.Application app = new Word.ApplicationClass();
@@ -79,48 +79,50 @@ namespace Диплом
                 for (int i = 1; i <= doc.Tables.Count; i++)
                 {
                     //loadStatus.progress.StatusBarPlass(i, doc.Tables.Count);
-                    
-                formatTimeTable buf=new formatTimeTable("",6);
+
+                    formatTimeTable buf = new formatTimeTable("", 6);
                     Word.Table t = doc.Tables[i];
                     for (int k = 2; k <= t.Columns.Count; k++)
                     {
                         for (int j = 2; j <= t.Rows.Count; j++)
                         {
-                            Lesson A=new Lesson(0);
                             string str = t.Cell(j, k).Range.Text;
+                            Lesson A = new Lesson(0);
+                            A.italy = (t.Cell(j, k).Range.Italic != -1);
                             A.fromString(str);
-                            if(j<6 && k<7)
-                            buf.lesson[k - 2, j - 2] = A;
-                            if (t.Rows.Count < 6)
-                                A=new Lesson(0);
+                            if (j <= 6 && k < 7)
+                                buf.lesson[k - 2, j - 2] = A;
+                            //Записано.
+
+                            if (t.Rows.Count < 8)
+                                A = new Lesson(0);
                             A.fromString("");
-                                buf.lesson[k - 2, j - 1] = A;
+                            buf.lesson[k - 2, j - 1] = A;
+                           
                         }
 
                     }
 
                     Data.teacher.Add(buf);
- 
-                  
+
+
                 }
             }
-            
-            
             //считывания имен
             int StrI = 0;
             string txt;
-            for (int i = 1; i <= doc.Paragraphs.Count; i++)
+          /*  for (int i = 1; i <= doc.Paragraphs.Count; i++)
             {
-                txt=doc.Paragraphs[i].Range.Text;
-               string name= FindName(txt);
-               if (name != "")
-               {
-                   Data.teacher[StrI++].name = name;
-                   i += 39;
-               }
-               if (Data.teacher.Count == StrI) break;
+                txt = doc.Paragraphs[i].Range.Text;
+                txt = FindName(txt);
+                if (txt != "")
+                {
+                    Data.teacher[StrI++].name = txt;
+                    i += 39;
+                }
+              //  if (Data.teacher.Count == StrI) break;
             }
-            Object saveChanges = Word.WdSaveOptions.wdSaveChanges;
+            */Object saveChanges = Word.WdSaveOptions.wdSaveChanges;
             Object originalFormat = Type.Missing;
             Object routeDocument = Type.Missing;
             app.Quit(ref saveChanges, ref originalFormat, ref routeDocument);

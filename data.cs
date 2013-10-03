@@ -21,7 +21,7 @@ namespace Диплом
 
     struct Lesson
     {
-        public Lesson(int N) { exist = new bool[2]; lection = new bool[2]; group = new string[2]; roomNomber = new string[2]; subject = new string[2]; bothWeek = true; }
+        public Lesson(int N) {  italy= new bool();exist = new bool[2]; lection = new bool[2]; group = new string[2]; roomNomber = new string[2]; subject = new string[2]; bothWeek = true; }
 
         public bool[] exist;
         public bool[] lection;
@@ -29,6 +29,7 @@ namespace Диплом
         public string[] roomNomber;
         public string[] subject;
         public bool bothWeek;
+        public bool italy;
         private static string facultets = @"(A|А|ТФ|ЭЛ|ЭР|С|C)";
 
         private static string houses = @"(A|А|Б|В|B|Г|Д|Ж|М|M|Н|С|C)";
@@ -36,19 +37,14 @@ namespace Диплом
         public void fromString(string str)
         {
             str = str.Replace("  ", "");
-            if (str.Length < 3)
+            if (str.Length < 3)//строка пуста.
             {
                 exist[0] = exist[1] = false;
-                return;//строка пуста.
+                return;
             }
-            if (chekShortVar(str) != "")//ТФ-11 – 10 1 Ж 510  2 Ж 206-РАЗБИВАЕМ ЭТУ СТРОКУ
-            {
-                string substr = chekShortVar(str);
-                int n = str.IndexOf(substr);
-                string S = str.Remove(n, substr.Length);
-                str = "1 " + S + getRoomNomber(substr) + "\r2 " + S + getRoomNomber(substr.Substring(getRoomNomber(substr).Length));
 
-            }
+            str= firstFormat(str);
+  
             if (str[0] != '1')
             {
                 if (str[0] == '2')//Только четные недели
@@ -77,6 +73,42 @@ namespace Диплом
                 subjectFormated(1);
 
             unionIfEquivalent();//Если первая и вторая недели эквивалентны
+        }
+
+        private string firstFormat(string str)
+        {
+            str = delStarBefore2(str);//Удаляем звездочку перед первым. 
+            if (chekShortVar(str) != "")//ТФ-11 – 10 1 Ж 510  2 Ж 206-РАЗБИВАЕМ ЭТУ СТРОКУ
+            {
+                string substr = chekShortVar(str);
+                int n = str.IndexOf(substr);
+                string S = str.Remove(n, substr.Length);
+                str = "1 " + S + getRoomNomber(substr) + "\r2 " + S + getRoomNomber(substr.Substring(getRoomNomber(substr).Length));
+
+            }
+            return str;
+        }
+        private static string delStarBefore1(string str)
+        {
+            string pattern1 = @"(\*\s*1)";//*    2
+            string pattern2 = @"(\*\s*)";//*    
+            Regex regex = new Regex(pattern1);
+            string str1 = regex.Match(str).Value;
+            if (str1 != "")
+                return str.Replace(str1, "1");
+            else return str;
+        }
+        private static string delStarBefore2(string str)
+        {
+            string pattern1 = @"(\*\s*2)";//*    2
+            string pattern2 = @"(\*\s*)";//*    
+            Regex regex = new Regex(pattern1);
+            string str1 = regex.Match(str).Value;
+            regex = new Regex(pattern2);
+            string str2 = regex.Match(str1).Value;
+            if (str2 != "")
+                return str.Replace(str2, "\r");
+            else return str;
         }
 
         private string chekShortVar(string str)// "... 1 М710 2 М711"

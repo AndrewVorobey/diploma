@@ -144,8 +144,6 @@ namespace Диплом
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-
-
             DialogResult result = MessageBox.Show("Данные будут потеряны. Удалить?", "удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
