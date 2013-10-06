@@ -52,7 +52,7 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "(*.doc;*.docx)|*.docx;*.doc";
             // 
             // menuStrip1
             // 
@@ -76,14 +76,14 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.открытьToolStripMenuItem.Text = "Открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // ToSave
             // 
             this.ToSave.Name = "ToSave";
-            this.ToSave.Size = new System.Drawing.Size(152, 22);
+            this.ToSave.Size = new System.Drawing.Size(132, 22);
             this.ToSave.Text = "Сохранить";
             this.ToSave.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
@@ -133,6 +133,10 @@
             this.настройкиSQLToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.настройкиSQLToolStripMenuItem.Text = "Настройки БД";
             this.настройкиSQLToolStripMenuItem.Click += new System.EventHandler(this.настройкиSQLToolStripMenuItem_Click);
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "(*.doc;*.docx)|*.docx;*.doc";
             // 
             // Names
             // 
