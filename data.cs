@@ -71,8 +71,13 @@ namespace Диплом
                 subjectFormated(0);
             if (exist[1])
                 subjectFormated(1);
-
+            if(subject[0]!=null)
+                subject[0] = subject[0].Replace("*", "");
+            if (subject[1] != null)
+                subject[1] = subject[1].Replace("*", "");
             unionIfEquivalent();//Если первая и вторая недели эквивалентны
+
+            if (exist[0]) if (subject[0] != subject[0].Replace("иссл", "")) { bothWeek = true; exist[1] = false; }
         }
 
         private string firstFormat(string str)
@@ -157,10 +162,8 @@ namespace Диплом
             string pattern = houses + @"\s?–?-?\d{3}(\s?/\s?\d{1,3})?a?а?";// М-711
             Regex regex = new Regex(pattern);
             return regex.Match(str).Value;
-
         }
-        
-        
+
 
         int findInStr(string A, string S)
         {
@@ -175,13 +178,13 @@ namespace Диплом
 
         public string ToString()
         {
-            string day = "";
+            string day = " ";
             if (bothWeek)
-                day += group + " " + subject + " " + roomNomber;
+                day += group[0] + " " + subject[0] + " " + roomNomber[0];
             else
             {
                 if (exist[0])
-                    day += "1" + group[0] + " " + subject[0] + " " + roomNomber[0] + "\r";
+                    day += "1" + group[0] + " " + subject[0] + " " + roomNomber[0] + "\n";
                 if (exist[1])
                     day += "2" + group[1] + " " + subject[1] + " " + roomNomber[1];
             }
@@ -257,7 +260,6 @@ namespace Диплом
                 }
                 catch { }
         }
-
         public static void pop(int N)
         {
             if (N < massData.Count)

@@ -44,7 +44,7 @@ namespace Диплом
 
             WritteAll.Enabled = WritteOne.Enabled = ReadFromSql.Enabled = false;
             ClearGrid();
-            ToSave.Enabled = false;
+           // ToSave.Enabled = false;
         }
 
 
