@@ -68,6 +68,7 @@ namespace Диплом
             doc = app.Documents.Open(ref filename, ref confirmConversions, ref readOnly, ref addToRecentFiles,
             ref passwordDocument, ref passwordTemplate, ref revert, ref writePasswordDocument, ref writePasswordTemplate,
             ref format, ref encoding, ref visible, ref openConflictDocument, ref openAndRepair, ref documentDirection, ref noEncodingDialog);
+         
             if (doc.Tables.Count == 0)
             {
                 //Err. TODOk
@@ -133,19 +134,17 @@ namespace Диплом
 
         public static void CreateWordDoc(string name)
         {
-            //"\f\r"-перенос на следующую строку. 
-
             #region inicialization
             int namesLen = Data.teacher.Count;
-            string[] days = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница" };
-            string[] times = { "9.30-10.30", "11.10–12.45", "13.45–15.20", "15.35–17.10", "17.25–19.00??" };
             const int pairLen = 4;//Сколько пар в день отображать
-            object start = 0;
-            object end = 0;
+            string[] daysNames = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница" };
+            string[] times = { "9.30-10.30", "11.10–12.45", "13.45–15.20", "15.35–17.10", "17.25–19.00??" };
             object nr = 1;
             object nc = pairLen;
-            int dayWidth = 160;
-            int nameWidth = 100;
+            object start = 0;
+            object end = 0;
+            const int dayWidth = 120;//ширина одного дня
+            const int namesWidth = 95;//ширина имен.
 
             Word.Application app = new Word.ApplicationClass();
             Word.Document doc = new Word.DocumentClass();
@@ -157,123 +156,27 @@ namespace Диплом
             Object DefaultTableBehavior = Type.Missing;
             Object AutoFitBehavior = Type.Missing;
             //Формирование страницы
-            doc.PageSetup.PageWidth = 1200;
-            doc.PageSetup.PageHeight = 1584;
+            doc.PageSetup.Orientation=Word.WdOrientation.wdOrientLandscape;
             //Создание таблицы
-            Word.Range r1;
+            Word.Range cellRange;
             Word.Range tableLocation = doc.Range(ref start, ref end);
             doc.Tables.Add(tableLocation, namesLen + 2, 7, ref DefaultTableBehavior, ref AutoFitBehavior);
-            Word.Table t = doc.Tables[1];
-           t.Borders.Enable = 1;
+            Word.Table table = doc.Tables[1];
+            table.Borders.Enable = 1;
+            table.Rows.SetHeight(14f, Microsoft.Office.Interop.Word.WdRowHeightRule.wdRowHeightExactly); 
 
             //Формирование Шрифтов 
-            Word.Font f = new Word.Font();
-            f.Size = 8;
-            f.Bold = 1;
-            t.Cell(1, 1).Width = nameWidth;
-            r1 = t.Cell(1, 1).Range;
-            r1.Font = f;
-
-
+            Word.Font TextFont = new Word.Font();
+            TextFont.Size = 8;
+            TextFont.Bold = 0;
+            table.Cell(1, 1).Width = namesWidth;
+            cellRange = table.Cell(1, 1).Range;
+            cellRange.Font = TextFont;
             #endregion
 
-            //Прописываем дни недели. 
-            for (int i = 0; i < 5; i++)
-            {
-                t.Cell(1, i + 2).Width = dayWidth;
-                r1 = t.Cell(1, i + 2).Range;
-                r1.Text = days[i];
-               // t.Cell(1, i + 2).Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-
-                
-                    t.Cell(1, i ).Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                    t.Cell(1, i).Borders[Word.WdBorderType.wdBorderRight].LineWidth = Word.WdLineWidth.wdLineWidth150pt;
-            }
-
-            t.Cell(1, 5).Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-            t.Cell(1, 5).Borders[Word.WdBorderType.wdBorderRight].LineWidth = Word.WdLineWidth.wdLineWidth150pt;
-            t.Cell(1, 6).Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-            t.Cell(1, 6).Borders[Word.WdBorderType.wdBorderRight].LineWidth = Word.WdLineWidth.wdLineWidth150pt;
-
-            //Делим дни на пары
-            for (int i = 0; i < 5; i++)
-                t.Cell(2, 2 + i * 4).Split(ref nr, ref nc);
-            t.Cell(2, 1).Width = nameWidth;
-            
-            f.Bold = 1;
-            //Задаем размер пар, и подписываем время. 
-           
-            for (int i = 0; i < 5 * pairLen; i++)
-            {
-                t.Cell(2, i + 2).Width = dayWidth / pairLen;
-                r1 = t.Cell(2, i + 2).Range;
-                r1.Font = f;
-                r1.Text = times[i % pairLen];
-
-                if (i % pairLen == 0)
-                {
-                    t.Cell(2, i + 2).Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                    t.Cell(2, i + 2).Borders[Word.WdBorderType.wdBorderLeft].LineWidth = Word.WdLineWidth.wdLineWidth150pt;
-                }
-            }
-
-            //Делаем разметку под пары. 
-            for (int i = 3; i < namesLen + 3; i++)
-            {
-                t.Cell(i, 1).Width = nameWidth;
-                for (int k = 0; k < 5; k++)
-                    t.Cell(i, 2 + k * 4).Split(ref nr, ref nc);
-
-                for (int j = 0; j < 5 * pairLen; j++)
-                {
-                    t.Cell(i, j + 2).Width = dayWidth / pairLen;
-                    if (j % pairLen == 0)
-                    {
-                        t.Cell(i, j + 2).Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                        t.Cell(i, j + 2).Borders[Word.WdBorderType.wdBorderLeft].LineWidth = Word.WdLineWidth.wdLineWidth150pt;
-                    }
-
-                }
-
-            }
-
-            //Заполнение созданной таблицы данными
-            for (int j = 3; j < namesLen + 3; j++)
-            {
-                f.Size = 10;
-                r1 = t.Cell(j, 1).Range;
-                r1.Font = f;
-                r1.Text = Data.teacher[j - 3].name;
-                r1 = t.Cell(j, 1 + 5 * pairLen + 1).Range;
-                r1.Font = f;
-                r1.Text = Data.teacher[j - 3].name;
-
-
-                r1.Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                r1.Borders[Word.WdBorderType.wdBorderLeft].LineWidth = Word.WdLineWidth.wdLineWidth150pt;
-
-                f.Size = 5;
-                for (int k = 2; k < 22; k++)
-                {
-                    r1.ParagraphFormat.LineSpacingRule = Word.WdLineSpacing.wdLineSpaceSingle;
-                    object A = r1.ParagraphFormat;
-                    if (k == 21)
-                        f.Size = 5;
-                    r1 = t.Cell(j, k).Range;
-                    r1.Font = f;
-                    r1.Rows.SetHeight(20, Word.WdRowHeightRule.wdRowHeightExactly);// = 30;
-                    r1.Text = Data.teacher[j - 3].lesson[(k - 2) / 4, (k - 2) % 4].ToString();
-                    //r1.ParagraphFormat.LineSpacing = 5f;
-                    r1.ParagraphFormat.SpaceAfter = 0.7f;
-                    r1.ParagraphFormat.LeftIndent=doc.Content.Application.CentimetersToPoints((float)-0.2);//Отступ отрицательный, что бы запись занимала ячейку полностью.
-                    r1.ParagraphFormat.RightIndent = doc.Content.Application.CentimetersToPoints((float)-0.2);
-                }
-            }
-
-
-          //Microsoft.Office.Interop.Word.WdRowHeightRule
-
-
+            formatTable(ref table, ref TextFont, pairLen, dayWidth, namesWidth, namesLen, cellRange);
+            setBorders(ref table, pairLen);
+            setDateToTable(ref doc, ref TextFont, pairLen, dayWidth, namesWidth, namesLen);
 
             #region save
             Object fileName = name;//@"C:\Test\Форматированная_Таблица.doc";
@@ -308,6 +211,109 @@ namespace Диплом
             #endregion
 
         }
+        private static void formatTable(ref Word.Table table, ref  Word.Font TextFont, int pairLen, int dayWidth, int namesWidth, int namesLen, Word.Range cellRange)
+        {
+
+            string[] daysNames = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница" };
+            string[] times = { "9.30-10.30", "11.10–12.45", "13.45–15.20", "15.35–17.10", "17.25–19.00??" };
+            object nr = 1;
+            object nc = pairLen;
+            //Прописываем дни недели. 
+            for (int i = 0; i < 5; i++)
+            {
+                table.Cell(1, i + 2).Width = dayWidth;
+                cellRange = table.Cell(1, i + 2).Range;
+                cellRange.Text = daysNames[i];
+            }
+            table.Cell(1, 1 + 5 + 1).Width = namesWidth;
+
+            //Делим дни на пары
+            for (int i = 0; i < 5; i++)
+                table.Cell(2, 2 + i * 4).Split(ref nr, ref nc);
+            table.Cell(2, 1).Width = namesWidth;
+            table.Cell(2, 1 + pairLen * 5 + 1).Width = namesWidth;
+
+            TextFont.Size = 5;
+            //Задаем размер пар, и подписываем время. 
+
+            for (int i = 0; i < 5 * pairLen; i++)
+            {
+                table.Cell(2, i + 2).Width = dayWidth / pairLen;
+                cellRange = table.Cell(2, i + 2).Range;
+                cellRange.Font = TextFont;
+                cellRange.Text = times[i % pairLen];
+            }
+
+            TextFont.Size = 6;
+            //Делаем разметку под пары. 
+            for (int i = 3; i < namesLen + 3; i++)
+            {
+                table.Cell(i, 1).Width = namesWidth;
+                table.Cell(i, 1+5+1).Width = namesWidth;
+                for (int k = 0; k < 5; k++)
+                    table.Cell(i, 2 + k * 4).Split(ref nr, ref nc);
+
+                for (int j = 0; j < 5 * pairLen; j++)
+                    table.Cell(i, j + 2).Width = dayWidth / pairLen;
+
+            }
+
+
+        }
+        private static void setBorders(ref Word.Table table, int pairLen)
+        {
+            //Первая строка
+            for (int i = 0; i < 7; i++)
+            {
+                table.Cell(1, i).Borders[Word.WdBorderType.wdBorderRight].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                table.Cell(1, i).Borders[Word.WdBorderType.wdBorderRight].LineWidth = Word.WdLineWidth.wdLineWidth100pt;
+            }
+
+            //остальные строки. 
+            for (int j = 2; j <= table.Rows.Count; j++)
+            {
+                for (int i = 0; i < 5 * pairLen; i += pairLen)
+                {
+                    table.Cell(j, i + 2).Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                    table.Cell(j, i + 2).Borders[Word.WdBorderType.wdBorderLeft].LineWidth = Word.WdLineWidth.wdLineWidth100pt;
+                }
+                table.Cell(j, 5 * pairLen + 2).Borders[Word.WdBorderType.wdBorderLeft].LineWidth = Word.WdLineWidth.wdLineWidth100pt;
+            }
+
+
+        }
+        private static void setDateToTable(ref Word.Document doc, ref  Word.Font TextFont, int pairLen, int dayWidth, int namesWidth, int namesLen)
+        {
+            Word.Table table = doc.Tables[1];
+            Word.Range cellRange;
+            //Заполнение созданной таблицы данными
+            for (int j = 3; j < namesLen + 3; j++)
+            {
+            TextFont.Size = 10;
+                cellRange = table.Cell(j, 1).Range;
+                cellRange.Font = TextFont;
+                cellRange.Text = Data.teacher[j - 3].name;
+                cellRange = table.Cell(j, 1 + 5 * pairLen + 1).Range;
+                cellRange.Font = TextFont;
+                cellRange.Text = Data.teacher[j - 3].name;
+                TextFont.Size = 5;
+                for (int k = 2; k < 22; k++)
+                {
+                    cellRange.ParagraphFormat.LineSpacingRule = Word.WdLineSpacing.wdLineSpaceSingle;
+                    object A = cellRange.ParagraphFormat;
+                    cellRange = table.Cell(j, k).Range;
+                    cellRange.Font = TextFont;
+                    //cellRange.Rows.SetHeight(20, Word.WdRowHeightRule.wdRowHeightExactly); Установка высоты строки
+                    cellRange.Text = Data.teacher[j - 3].lesson[(k - 2) / 4, (k - 2) % 4].ToString();
+                    cellRange.ParagraphFormat.SpaceAfter = 0.0f;
+                    cellRange.ParagraphFormat.LeftIndent = doc.Content.Application.CentimetersToPoints((float)-0.2);//Отступ отрицательный, что бы запись занимала ячейку полностью.
+                    cellRange.ParagraphFormat.RightIndent = doc.Content.Application.CentimetersToPoints((float)-0.2);
+                }
+            }
+
+
+        }
+
     }
 
 

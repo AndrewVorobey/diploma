@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace Диплом
 {
-    //Создать большой .doc
-    //Курсив внести в отдельный BOOL
-    //
     public partial class Form1 : Form
     {
         const int gridSize = 5;

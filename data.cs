@@ -176,7 +176,7 @@ namespace Диплом
             subject[N] = subject[N].Replace("?", "") + " ";
         }
 
-        public string ToString()
+        override public string ToString()
         {
             string day = " ";
             if (bothWeek)
