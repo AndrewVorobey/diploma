@@ -11,11 +11,13 @@ namespace Диплом
 {
     public partial class Form1 : Form
     {
+       public  static Form1 form;
         const int gridSize = 5;
         Point lastTableClick = new Point(0, 0);
 
         public Form1()
         {
+            form = this;
             InitializeComponent();
             dataGrid.RowCount = gridSize;
             dataGrid.ColumnCount = gridSize;
@@ -41,7 +43,6 @@ namespace Диплом
 
             WritteAll.Enabled = WritteOne.Enabled = ReadFromSql.Enabled = false;
             ClearGrid();
-           // ToSave.Enabled = false;
         }
 
 
@@ -187,7 +188,10 @@ namespace Диплом
         }
 
 
-
+        public void SetProc(int PROC)
+        {
+            progressBar1.Value=PROC;
+        }
 
 
 

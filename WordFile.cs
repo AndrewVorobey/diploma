@@ -44,7 +44,7 @@ namespace Диплом
         public static void ReadFromFile(Object filename)
         {
             // String[] Names = new String[34] { "Александров А.А.", "Амосов А.А.", "Амосова О.А.", "Ахметшин А.А", "Бредихин Р.Н.", "Булычева О.Н.", " Вестфальский А.Е.", "Горелов В.А.", "Горицкий Ю.А.", "Григорьев В.П.", "Дубинский Ю.А.", "Дубовицкая Н.В.", "Жилейкин Я.М.", "Заславский А.А.", "Злотник А.А.", "Зубков П.В.", "Зубов В.С.", "Игнатьева Н.У.", "Ишмухаметов А.З.", "Казенкин К.О.", "Кирсанов М.Н.", "Князев А.В.", "Крупин Г.В.", "Кубышин С.Ю.", "Ляшенко Л.И.", "Мамонтов А.И.", "Макаров П.В.", "Мещанинов Д.Г.", "Набебин А.А.", "Перескоков А.В.", "Титов Д.А.", "Фролов А.Б.", "Черепова М.Ф.", "Шевченко И.В." };
-
+            Form1.form.SetProc(0);
 
             Word.Application app = new Word.ApplicationClass();
             Word.Document doc = new Word.DocumentClass();
@@ -68,7 +68,7 @@ namespace Диплом
             doc = app.Documents.Open(ref filename, ref confirmConversions, ref readOnly, ref addToRecentFiles,
             ref passwordDocument, ref passwordTemplate, ref revert, ref writePasswordDocument, ref writePasswordTemplate,
             ref format, ref encoding, ref visible, ref openConflictDocument, ref openAndRepair, ref documentDirection, ref noEncodingDialog);
-         
+
             if (doc.Tables.Count == 0)
             {
                 //Err. TODOk
@@ -79,12 +79,12 @@ namespace Диплом
 
                 for (int i = 1; i <= doc.Tables.Count; i++)
                 {
-                    //loadStatus.progress.StatusBarPlass(i, doc.Tables.Count);
-
+                    Form1.form.SetProc(i * 5 / doc.Tables.Count);
                     formatTimeTable buf = new formatTimeTable("", 6);
                     Word.Table t = doc.Tables[i];
                     for (int k = 2; k <= t.Columns.Count; k++)
                     {
+
                         for (int j = 2; j <= t.Rows.Count; j++)
                         {
                             string str = t.Cell(j, k).Range.Text;
@@ -112,18 +112,25 @@ namespace Диплом
             //считывания имен
             int StrI = 0;
             string txt;
-            /*  for (int i = 1; i <= doc.Paragraphs.Count; i++)
-              {
-                  txt = doc.Paragraphs[i].Range.Text;
-                  txt = FindName(txt);
-                  if (txt != "")
-                  {
-                      Data.teacher[StrI++].name = txt;
-                      i += 39;
-                  }
+            for (int i = 1; i <= doc.Paragraphs.Count; i++)
+            {
+                Form1.form.SetProc(5 + i * 95 / doc.Paragraphs.Count);
+                txt = doc.Paragraphs[i].Range.Text;
+                txt = FindName(txt);
+                if (txt != "")
+                {
+                    Data.teacher[StrI++].name = txt;
+                    i += 39;
+                }
                 //  if (Data.teacher.Count == StrI) break;
-              }
-              */
+            }
+
+            for (int i = 0; i < Data.teacher.Count; i++)
+                if (Data.teacher[i].name == "")
+                {
+                    Data.teacher.RemoveAt(i); i--;
+                }
+
             Object saveChanges = Word.WdSaveOptions.wdSaveChanges;
             Object originalFormat = Type.Missing;
             Object routeDocument = Type.Missing;
@@ -135,6 +142,8 @@ namespace Диплом
         public static void CreateWordDoc(string name)
         {
             #region inicialization
+
+            Form1.form.SetProc(0);
             int namesLen = Data.teacher.Count;
             const int pairLen = 4;//Сколько пар в день отображать
             string[] daysNames = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница" };
@@ -156,14 +165,14 @@ namespace Диплом
             Object DefaultTableBehavior = Type.Missing;
             Object AutoFitBehavior = Type.Missing;
             //Формирование страницы
-            doc.PageSetup.Orientation=Word.WdOrientation.wdOrientLandscape;
+            doc.PageSetup.Orientation = Word.WdOrientation.wdOrientLandscape;
             //Создание таблицы
             Word.Range cellRange;
             Word.Range tableLocation = doc.Range(ref start, ref end);
             doc.Tables.Add(tableLocation, namesLen + 2, 7, ref DefaultTableBehavior, ref AutoFitBehavior);
             Word.Table table = doc.Tables[1];
             table.Borders.Enable = 1;
-            table.Rows.SetHeight(14f, Microsoft.Office.Interop.Word.WdRowHeightRule.wdRowHeightExactly); 
+            table.Rows.SetHeight(14f, Microsoft.Office.Interop.Word.WdRowHeightRule.wdRowHeightExactly);
 
             //Формирование Шрифтов 
             Word.Font TextFont = new Word.Font();
@@ -238,6 +247,7 @@ namespace Диплом
 
             for (int i = 0; i < 5 * pairLen; i++)
             {
+                Form1.form.SetProc(10 + i * 10 / (5 * pairLen));
                 table.Cell(2, i + 2).Width = dayWidth / pairLen;
                 cellRange = table.Cell(2, i + 2).Range;
                 cellRange.Font = TextFont;
@@ -248,8 +258,10 @@ namespace Диплом
             //Делаем разметку под пары. 
             for (int i = 3; i < namesLen + 3; i++)
             {
+                Form1.form.SetProc(10 + i * 30 / namesLen + 3);
+
                 table.Cell(i, 1).Width = namesWidth;
-                table.Cell(i, 1+5+1).Width = namesWidth;
+                table.Cell(i, 1 + 5 + 1).Width = namesWidth;
                 for (int k = 0; k < 5; k++)
                     table.Cell(i, 2 + k * 4).Split(ref nr, ref nc);
 
@@ -272,6 +284,8 @@ namespace Диплом
             //остальные строки. 
             for (int j = 2; j <= table.Rows.Count; j++)
             {
+
+                Form1.form.SetProc(40 + j * 40 / table.Rows.Count);
                 for (int i = 0; i < 5 * pairLen; i += pairLen)
                 {
                     table.Cell(j, i + 2).Borders[Word.WdBorderType.wdBorderLeft].LineStyle = Word.WdLineStyle.wdLineStyleSingle;
@@ -289,7 +303,8 @@ namespace Диплом
             //Заполнение созданной таблицы данными
             for (int j = 3; j < namesLen + 3; j++)
             {
-            TextFont.Size = 10;
+                Form1.form.SetProc(80 + (j-3) * 20 / namesLen);
+                TextFont.Size = 10;
                 cellRange = table.Cell(j, 1).Range;
                 cellRange.Font = TextFont;
                 cellRange.Text = Data.teacher[j - 3].name;
@@ -299,6 +314,7 @@ namespace Диплом
                 TextFont.Size = 5;
                 for (int k = 2; k < 22; k++)
                 {
+
                     cellRange.ParagraphFormat.LineSpacingRule = Word.WdLineSpacing.wdLineSpaceSingle;
                     object A = cellRange.ParagraphFormat;
                     cellRange = table.Cell(j, k).Range;

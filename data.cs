@@ -231,7 +231,7 @@ namespace Диплом
 
     class Data
     {
-        public static List<formatTimeTable> teacher;// = new List<formatTimeTable>();
+        public static List<formatTimeTable> teacher;
         public static string name;
         public static int selectNomber;
     }

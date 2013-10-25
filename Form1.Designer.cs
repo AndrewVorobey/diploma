@@ -45,7 +45,9 @@
             this.Names = new System.Windows.Forms.ComboBox();
             this.ShowDataMass = new System.Windows.Forms.ComboBox();
             this.DeletData = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.dataGrid = new Диплом.MyDataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
@@ -61,7 +63,7 @@
             this.управлениеToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1029, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1004, 24);
             this.menuStrip1.TabIndex = 3;
             // 
             // файлToolStripMenuItem
@@ -141,7 +143,7 @@
             // Names
             // 
             this.Names.FormattingEnabled = true;
-            this.Names.Location = new System.Drawing.Point(139, 111);
+            this.Names.Location = new System.Drawing.Point(139, 72);
             this.Names.Name = "Names";
             this.Names.Size = new System.Drawing.Size(121, 21);
             this.Names.TabIndex = 7;
@@ -150,7 +152,7 @@
             // ShowDataMass
             // 
             this.ShowDataMass.FormattingEnabled = true;
-            this.ShowDataMass.Location = new System.Drawing.Point(12, 111);
+            this.ShowDataMass.Location = new System.Drawing.Point(12, 72);
             this.ShowDataMass.Name = "ShowDataMass";
             this.ShowDataMass.Size = new System.Drawing.Size(121, 21);
             this.ShowDataMass.TabIndex = 10;
@@ -158,13 +160,20 @@
             // 
             // DeletData
             // 
-            this.DeletData.Location = new System.Drawing.Point(12, 82);
+            this.DeletData.Location = new System.Drawing.Point(12, 43);
             this.DeletData.Name = "DeletData";
-            this.DeletData.Size = new System.Drawing.Size(75, 23);
+            this.DeletData.Size = new System.Drawing.Size(121, 23);
             this.DeletData.TabIndex = 11;
-            this.DeletData.Text = "Закрыть файл";
+            this.DeletData.Text = "▼ Закрыть файл ▼";
             this.DeletData.UseVisualStyleBackColor = true;
             this.DeletData.Click += new System.EventHandler(this.DeletData_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(280, 72);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(710, 21);
+            this.progressBar1.TabIndex = 12;
             // 
             // dataGrid
             // 
@@ -183,18 +192,29 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGrid.GridColor = System.Drawing.SystemColors.HotTrack;
-            this.dataGrid.Location = new System.Drawing.Point(12, 148);
+            this.dataGrid.Location = new System.Drawing.Point(12, 109);
             this.dataGrid.MultiSelect = false;
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
-            this.dataGrid.Size = new System.Drawing.Size(994, 248);
+            this.dataGrid.Size = new System.Drawing.Size(978, 227);
             this.dataGrid.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 27);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "V 1.0";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1029, 408);
+            this.ClientSize = new System.Drawing.Size(1004, 384);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.DeletData);
             this.Controls.Add(this.ShowDataMass);
             this.Controls.Add(this.Names);
@@ -228,6 +248,8 @@
         private System.Windows.Forms.ToolStripMenuItem ReadFromSql;
         private System.Windows.Forms.ToolStripMenuItem WritteAll;
         private System.Windows.Forms.ToolStripMenuItem WritteOne;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
